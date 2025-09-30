@@ -53,4 +53,5 @@ ios/Runner/GoogleService-Info.plist
 **/firebase_options*.dart
 **/google-services*.json
 **/GoogleService-Info*.plist
+firebase.json
 
