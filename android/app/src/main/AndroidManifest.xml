@@ -3,7 +3,14 @@
     <!-- ← PERMISOS PARA PETICIONES HTTP -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
+    <!-- ← PERMISOS PARA CÁMARA -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- ← PERMISOS PARA NOTIFICACIONES PUSH -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />    <application
         android:label="my_flutter_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

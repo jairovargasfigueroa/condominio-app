@@ -105,6 +105,11 @@ class ResidenteWidget extends StatelessWidget {
                     perfil!.usuario.fechaNacimiento,
                   ),
                 ]),
+
+                SizedBox(height: 20),
+
+                // Información de la vivienda
+                _buildViviendaSection(),
               ],
             ),
           ),
@@ -215,6 +220,126 @@ class ResidenteWidget extends StatelessWidget {
           Expanded(
             child: Text(value, style: TextStyle(color: Colors.grey[800])),
           ),
+        ],
+      ),
+    );
+  }
+
+  // ✨ Widget para mostrar información de la vivienda
+  Widget _buildViviendaSection() {
+    if (perfil?.vivienda == null) {
+      return _buildInfoSection('Vivienda', [
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.orange.shade50,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.orange.shade200),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.info, color: Colors.orange, size: 24),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'No tienes una vivienda asignada.\nContacta al administrador para más información.',
+                  style: TextStyle(color: Colors.orange.shade800, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]);
+    }
+
+    final vivienda = perfil!.vivienda!;
+    return _buildInfoSection('Mi Vivienda', [
+      _buildInfoRow('Número', vivienda.numero),
+      _buildInfoRow('Dirección', vivienda.direccion),
+      if (vivienda.categoria != null) ...[
+        _buildInfoRow('Categoría', vivienda.categoria!.nombre),
+        if (vivienda.categoria!.descripcion != null)
+          _buildInfoRow('Descripción', vivienda.categoria!.descripcion!),
+      ] else
+        _buildInfoRow('Categoría', 'No especificada'),
+      SizedBox(height: 12),
+      _buildCopropietarioInfo(vivienda.copropietario),
+    ]);
+  }
+
+  // ✨ Widget para mostrar información del copropietario
+  Widget _buildCopropietarioInfo(dynamic copropietario) {
+    if (copropietario == null) {
+      return Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.blue.shade50,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: Colors.blue.shade200),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.person_outline, color: Colors.blue, size: 20),
+            SizedBox(width: 8),
+            Text(
+              'Sin copropietario asignado',
+              style: TextStyle(
+                color: Colors.blue.shade700,
+                fontSize: 13,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.green.shade50,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: Colors.green.shade200),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.person, color: Colors.green, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Copropietario',
+                style: TextStyle(
+                  color: Colors.green.shade700,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
+          Text(
+            '${copropietario.nombre} ${copropietario.apellido ?? ''}'.trim(),
+            style: TextStyle(
+              color: Colors.green.shade800,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          if (copropietario.telefono != null) ...[
+            SizedBox(height: 4),
+            Text(
+              '📱 ${copropietario.telefono}',
+              style: TextStyle(color: Colors.green.shade700, fontSize: 12),
+            ),
+          ],
+          if (copropietario.email != null) ...[
+            SizedBox(height: 4),
+            Text(
+              '✉️ ${copropietario.email}',
+              style: TextStyle(color: Colors.green.shade700, fontSize: 12),
+            ),
+          ],
         ],
       ),
     );

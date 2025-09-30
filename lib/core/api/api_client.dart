@@ -7,7 +7,7 @@ class ApiClient {
   static const String baseUrl = 'http://192.168.0.5:8000';
   // TODO: Si Django no responde, cambiar a localhost para pruebas
   // static const String baseUrl = 'http://localhost:8000';
-  // static const String baseUrl = 'http://10.0.2.2:8000'; // Para emulador
+  // static const String baseUrl = 'http://10.139.62.4:8000'; // Para emulador
   static String? _token;
 
   /// Configura el token de autorización que se agregará automáticamente
@@ -82,6 +82,43 @@ class ApiClient {
     print('🔑 Headers: ${headers.keys.join(', ')}');
 
     return await http.delete(Uri.parse(url), headers: headers);
+  }
+
+  /// Realiza una petición POST multipart para envío de archivos
+  static Future<http.Response> postMultipart(
+    String endpoint, {
+    required List<int> fileBytes,
+    required String fileName,
+    String fieldName = 'foto',
+    Map<String, String>? additionalFields,
+  }) async {
+    final url = '$baseUrl$endpoint';
+
+    print('📸 POST MULTIPART: $url');
+    print('📁 File: $fileName (${fileBytes.length} bytes)');
+
+    final request = http.MultipartRequest('POST', Uri.parse(url));
+
+    // 🔐 Agrega automáticamente el token si está disponible
+    if (_token != null) {
+      request.headers['Authorization'] = 'Bearer $_token';
+    }
+
+    // Agrega el archivo
+    request.files.add(
+      http.MultipartFile.fromBytes(fieldName, fileBytes, filename: fileName),
+    );
+
+    // Agrega campos adicionales si los hay
+    if (additionalFields != null) {
+      request.fields.addAll(additionalFields);
+    }
+
+    print('🔑 Headers: ${request.headers.keys.join(', ')}');
+    print('📋 Fields: ${request.fields.keys.join(', ')}');
+
+    final streamedResponse = await request.send();
+    return await http.Response.fromStream(streamedResponse);
   }
 
   /// Construye los headers HTTP incluyendo el token de autorización si está disponible

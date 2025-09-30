@@ -11,12 +11,16 @@ class RouteNames {
   // Rutas específicas para residentes
   static const String residentePerfil = '/residente/perfil';
   static const String residenteReservas = '/residente/reservas';
+  static const String residenteComunicados = '/residente/comunicados';
+  static const String residenteExpensas = '/residente/expensas';
   // EJEMPLO: Para agregar nuevas rutas de residente
   // static const String residentePagos = '/residente/pagos';
 
   // Rutas específicas para guardias
   static const String guardiaPerfilNew = '/guardia/perfil';
   static const String guardiaAccesos = '/guardia/accesos';
+  static const String guardiaReconocimientoFacial =
+      '/guardia/reconocimiento-facial';
   // EJEMPLO: Para agregar nuevas rutas de guardia
   // static const String guardiaRondas = '/guardia/rondas';
   // static const String guardiaReportes = '/guardia/reportes';

@@ -4,8 +4,12 @@ import 'package:my_flutter_app/features/auth/presentation/providers/auth_provide
 import 'package:my_flutter_app/features/users/presentation/screens/user_screen.dart';
 import 'package:my_flutter_app/features/residentes/perfil/presentation/screens/residente_screen.dart';
 import 'package:my_flutter_app/features/residentes/reservas/presentation/screens/reservas_screen.dart';
+import 'package:my_flutter_app/features/residentes/comunicados/presentation/screens/comunicados_screen.dart';
+import 'package:my_flutter_app/features/residentes/comunicados/presentation/screens/comunicado_detalle_screen.dart';
+import 'package:my_flutter_app/features/residentes/expensas/presentation/screens/expensas_screen.dart';
 import 'package:my_flutter_app/features/guardias/perfil/presentation/screens/guardia_screen.dart';
 import 'package:my_flutter_app/features/guardias/accesos/presentation/screens/accesos_screen.dart';
+import 'package:my_flutter_app/features/guardias/accesos/presentation/screens/facial_recognition_screen.dart';
 import 'package:my_flutter_app/core/widgets/app_layout_with_tabs.dart';
 import 'route_names.dart';
 
@@ -81,6 +85,24 @@ GoRouter createAppRouter(AuthProvider authProvider) {
             name: 'residente_reservas',
             builder: (context, state) => ReservasScreen(),
           ),
+          GoRoute(
+            path: RouteNames.residenteComunicados,
+            name: 'residente_comunicados',
+            builder: (context, state) => ComunicadosScreen(),
+          ),
+          GoRoute(
+            path: RouteNames.residenteExpensas,
+            name: 'residente_expensas',
+            builder: (context, state) => ExpensasScreen(),
+          ),
+          GoRoute(
+            path: '/residente/comunicado/:id',
+            name: 'comunicado_detalle',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return ComunicadoDetalleScreen(comunicadoId: id);
+            },
+          ),
           // EJEMPLO: Para agregar nuevas pantallas de residente
           // GoRoute(
           //   path: '/residente/pagos',
@@ -98,6 +120,11 @@ GoRouter createAppRouter(AuthProvider authProvider) {
             path: RouteNames.guardiaAccesos,
             name: 'guardia_accesos',
             builder: (context, state) => AccesosScreen(),
+          ),
+          GoRoute(
+            path: RouteNames.guardiaReconocimientoFacial,
+            name: 'guardia_reconocimiento_facial',
+            builder: (context, state) => FacialRecognitionScreen(),
           ),
           // EJEMPLO: Para agregar nuevas pantallas de guardia
           // GoRoute(

@@ -39,7 +39,10 @@ class DynamicBottomNav extends StatelessWidget {
     if (role == 'residente') {
       if (location.contains('/residente/perfil')) return 0;
       if (location.contains('/residente/reservas')) return 1;
-      // EJEMPLO: if (location.contains('/residente/pagos')) return 2;
+      if (location.contains('/residente/comunicado'))
+        return 2; // Incluye tanto /comunicados como /comunicado/:id
+      if (location.contains('/residente/expensas')) return 3;
+      // EJEMPLO: if (location.contains('/residente/pagos')) return 4;
     } else if (role == 'guardia') {
       if (location.contains('/guardia/perfil')) return 0;
       if (location.contains('/guardia/accesos')) return 1;
@@ -61,8 +64,14 @@ class DynamicBottomNav extends StatelessWidget {
         case 1:
           route = '/residente/reservas';
           break;
+        case 2:
+          route = '/residente/comunicados';
+          break;
+        case 3:
+          route = '/residente/expensas';
+          break;
         // EJEMPLO PARA AGREGAR NUEVAS PANTALLAS:
-        // case 2:
+        // case 4:
         //   route = '/residente/pagos';
         //   break;
         default:
@@ -101,6 +110,14 @@ class DynamicBottomNav extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.event_available),
           label: 'Reservas',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.campaign),
+          label: 'Comunicados',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.receipt_long),
+          label: 'Expensas',
         ),
         // EJEMPLO PARA AGREGAR NUEVOS TABS:
         // BottomNavigationBarItem(

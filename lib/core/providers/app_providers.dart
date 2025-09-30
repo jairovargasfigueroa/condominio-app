@@ -2,12 +2,16 @@ import 'package:provider/provider.dart';
 import 'package:my_flutter_app/features/users/presentation/providers/user_provider.dart';
 import 'package:my_flutter_app/features/residentes/perfil/presentation/providers/residente_provider.dart';
 import 'package:my_flutter_app/features/residentes/reservas/presentation/providers/reservas_provider.dart';
+import 'package:my_flutter_app/features/residentes/comunicados/presentation/providers/comunicados_provider.dart';
+import 'package:my_flutter_app/features/residentes/expensas/presentation/providers/expensas_provider.dart';
 import 'package:my_flutter_app/features/guardias/perfil/presentation/providers/guardia_provider.dart';
 import 'package:my_flutter_app/features/guardias/accesos/presentation/providers/accesos_provider.dart';
 import 'package:my_flutter_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:my_flutter_app/features/users/data/repositories/user_repository_implement.dart';
 import 'package:my_flutter_app/features/residentes/perfil/data/repositories/residente_repository_implement.dart';
 import 'package:my_flutter_app/features/residentes/reservas/data/repositories/reservas_repository.dart';
+import 'package:my_flutter_app/features/residentes/comunicados/data/repositories/comunicados_repository_impl.dart';
+import 'package:my_flutter_app/features/residentes/expensas/data/repositories/expensas_repository_impl.dart';
 import 'package:my_flutter_app/features/guardias/perfil/data/repositories/guardia_repository_implement.dart';
 import 'package:my_flutter_app/features/guardias/accesos/data/repositories/accesos_repository.dart';
 import 'package:my_flutter_app/features/guardias/accesos/data/services/accesos_service.dart';
@@ -15,6 +19,8 @@ import 'package:my_flutter_app/features/users/data/data_sources/user_remote_data
 import 'package:my_flutter_app/features/residentes/perfil/data/services/residente_remote_service.dart';
 import 'package:my_flutter_app/features/residentes/reservas/data/services/reservas_service.dart';
 import 'package:my_flutter_app/features/residentes/reservas/data/services/areas_comunes_service.dart';
+import 'package:my_flutter_app/features/residentes/comunicados/data/datasources/comunicados_api_service.dart';
+import 'package:my_flutter_app/features/residentes/expensas/data/datasources/expensas_api_service.dart';
 import 'package:my_flutter_app/features/guardias/perfil/data/services/guardia_remote_service.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -23,7 +29,14 @@ class AppProviders {
   /// Crea la lista de providers para MultiProvider
   static List<SingleChildWidget> get providers => [
     // 🔐 Provider de Autenticación (DEBE IR PRIMERO)
-    ChangeNotifierProvider(create: (_) => AuthProvider()),
+    ChangeNotifierProvider(
+      create: (_) {
+        final authProvider = AuthProvider();
+        // Inicializar desde storage automáticamente
+        authProvider.initializeFromStorage();
+        return authProvider;
+      },
+    ),
 
     // Providers de Users
     ChangeNotifierProvider(
@@ -53,6 +66,26 @@ class AppProviders {
               remoteService: ReservasRemoteService(),
             ),
             areasComunesService: AreasComunesService(),
+          ),
+    ),
+
+    // Provider de Comunicados para residentes
+    ChangeNotifierProvider(
+      create:
+          (_) => ComunicadosProvider(
+            repository: ComunicadosRepositoryImpl(
+              apiService: ComunicadosApiService(),
+            ),
+          ),
+    ),
+
+    // Provider de Expensas para residentes
+    ChangeNotifierProvider(
+      create:
+          (_) => ExpensasProvider(
+            repository: ExpensasRepositoryImpl(
+              apiService: ExpensasApiService(),
+            ),
           ),
     ),
 

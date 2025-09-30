@@ -1,3 +1,5 @@
+import 'residente_model.dart';
+
 /// Modelo para la respuesta de la API /api/residentes/perfil/
 class PerfilResponse {
   final bool success;
@@ -24,14 +26,24 @@ class PerfilData {
   final int id;
   final UsuarioData usuario;
   final String zona;
+  final ViviendaModel? vivienda; // Puede ser null si no tiene vivienda asignada
 
-  PerfilData({required this.id, required this.usuario, required this.zona});
+  PerfilData({
+    required this.id,
+    required this.usuario,
+    required this.zona,
+    this.vivienda,
+  });
 
   factory PerfilData.fromJson(Map<String, dynamic> json) {
     return PerfilData(
       id: json['id'] ?? 0,
       usuario: UsuarioData.fromJson(json['usuario'] ?? {}),
       zona: json['zona'] ?? '',
+      vivienda:
+          json['vivienda'] != null
+              ? ViviendaModel.fromJson(json['vivienda'])
+              : null,
     );
   }
 }

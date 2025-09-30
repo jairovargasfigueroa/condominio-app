@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../providers/accesos_provider.dart';
 import 'create_acceso_screen.dart';
+import '../../../../../core/routing/route_names.dart';
 
 class AccesosScreen extends StatefulWidget {
   @override
@@ -79,24 +81,48 @@ class _AccesosScreenState extends State<AccesosScreen> {
             },
           ),
 
-          // Botón principal para registrar acceso
+          // Botones principales
           Padding(
             padding: EdgeInsets.all(16),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateAccesoScreen()),
-                );
-              },
-              icon: Icon(Icons.login),
-              label: Text('Registrar Nuevo Acceso'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                minimumSize: Size(double.infinity, 56),
-              ),
+            child: Column(
+              children: [
+                // Botón para registrar acceso manual
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreateAccesoScreen(),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.login),
+                  label: Text('Registrar Nuevo Acceso'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                    minimumSize: Size(double.infinity, 56),
+                  ),
+                ),
+
+                SizedBox(height: 12),
+
+                // Botón para reconocimiento facial
+                ElevatedButton.icon(
+                  onPressed: () {
+                    context.go(RouteNames.guardiaReconocimientoFacial);
+                  },
+                  icon: Icon(Icons.face),
+                  label: Text('Reconocimiento Facial'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                    minimumSize: Size(double.infinity, 56),
+                  ),
+                ),
+              ],
             ),
           ),
 
